@@ -4,19 +4,23 @@ from fastapi import FastAPI, Request, HTTPException
 
 from src.routes.user.routes_user import RoutesUser
 from src.routes.login.routes_login import RoutesLogin
+from src.routes.ticket.routes_ticket import RoutesTicket
 
 
 from .config import settings
 from .middleware import CheckTokenMiddleware
 
 app = FastAPI(
-    title="Api - Managerpayments",
-    version="0.0.2",
-    description="""Olá prezado, essa API visa trazer uma comunicação de usuário/aplicação de forma eficiente, facilitando a rotina diária referente a controle de pagamentos através do banco CORA.  \n\n\n Desenvolvido para:  ICR ASSESSORIA.   \n Desenvolvedor BackEnd: Guilherme Novais - GitHub - [GuiNovaisPy]    \n Desenvolvedor BackEnd: Gabriel Silva - GitHub - [GabrielSilvaTech]    \n Desenvolvedor FrontEnd: Luara Oliveira - GitHub - [luluoliv],
+    title="API - TICKETFLOW",
+    version="0.0.1",
+    description="""
+    Olá prezado, essa API visa trazer uma comunicação de usuário/aplicação de forma eficiente, 
+    facilitando a rotina diária referente a controle de tickets.
+    \n\n\n Desenvolvido para:  PROJETO IMPACTA.   \n DesenvolvedoR: Gabriel Silva - GitHub - [GabrielSilvaTech]
     """,
     contact={
         "name": "Suporte API",
-        "email": "desenvolvimento@grupoicr.com.br",
+        "email": "gabrielsilva.infotech@gmail.com.br",
     },
     servers=[
         {"url": f"{settings.ROUTE_API}", "description": "Servidor de Desenvolvimento"},
@@ -44,8 +48,10 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 route_login = RoutesLogin().route_login
 route_user = RoutesUser().route_user
+route_ticket = RoutesTicket().route_ticket
 
 app.add_middleware(CheckTokenMiddleware)
 app.include_router(route_login)
 app.include_router(route_user)
+app.include_router(route_ticket)
 
