@@ -22,6 +22,10 @@ class ResponseCreateTicket(BaseModel):
     success: bool
     
 
+class ResponseSuccess(BaseModel):
+    success: bool
+
+
 class ResponseListTicket(BaseModel):
     title: str
     description: str
@@ -29,3 +33,9 @@ class ResponseListTicket(BaseModel):
     priority: str    
     status_ticket: str
     creator: str
+    id: str
+    
+
+class CloseTicket(BaseModel):
+    id_ticket: str   
+    status_ticket: StatusTicket

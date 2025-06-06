@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from src.utilities.utility import Utility
 from src.configs.database.connect_managerpayments import DbConnectionHandler
 from src.model.ticket.tb_ticket import Ticket
+from src.model.ticket.entity_ticket import StatusTicket
 from src.model.user.tb_user import User
 
 
@@ -15,6 +16,21 @@ class TicketRepository(DbConnectionHandler):
             try:
                 db.session.add(ticket)
                 db.session.commit()
+
+            except Exception as e:
+                print(e)
+                db.session.rollback()
+                raise HTTPException(status_code=409, detail="Erro ao acessar banco de dados.")
+            
+    def closed_ticket(self, id_ticket:str, status: StatusTicket):
+        with self as db:
+            try:
+                ticket = db.session.query(Ticket).filter_by(_id=id_ticket).first()
+                
+                if ticket:
+                    ticket.status_ticket = status            
+                    db.session.flush()
+                    db.session.commit()
 
             except Exception as e:
                 print(e)

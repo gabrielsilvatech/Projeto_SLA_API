@@ -3,7 +3,8 @@ from fastapi.security.http import HTTPAuthorizationCredentials
 
 from src.controller.ticket.create_ticket import CreateTicket
 from src.controller.ticket.list_ticket import ListTicket
-from src.model.ticket.entity_ticket import DataTicket, DataSearchTicket, ResponseCreateTicket, ResponseListTicket
+from src.controller.ticket.close_ticket import FinishTicket
+from src.model.ticket.entity_ticket import DataTicket, DataSearchTicket, ResponseCreateTicket, ResponseListTicket, CloseTicket, ResponseSuccess
 from src.service.autentic.service_autentic import ServiceAutenticUser
 
 
@@ -20,3 +21,8 @@ class RoutesTicket:
     @route_ticket.post("/list_tickets")
     def list_tickets(data:DataSearchTicket, token: HTTPAuthorizationCredentials = Depends(ServiceAutenticUser.validate_token)) -> list[ResponseListTicket]:
         return ListTicket().list(data)
+    
+    @staticmethod
+    @route_ticket.post("/close_ticket")
+    def close_ticket(data:CloseTicket, token: HTTPAuthorizationCredentials = Depends(ServiceAutenticUser.validate_token)) -> ResponseSuccess:
+        return FinishTicket().close(data,token)
